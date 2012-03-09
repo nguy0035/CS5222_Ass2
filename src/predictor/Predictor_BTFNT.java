@@ -35,6 +35,6 @@ public class Predictor_BTFNT {
         else
             isForwardBranch = true;
         
-        return (isForwardBranch == true ? true : false);
+        return (isForwardBranch == true ? false : true);
     }
 }

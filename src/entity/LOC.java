@@ -13,11 +13,13 @@ public class LOC {
     private long BTA;
     private int branch_ID;
     private boolean taken;
-    public LOC(long BIA, long BTA, int branch_ID,boolean taken) {
+    private int line; //for debug purpose !!!!!!!!!!!!!!!!!!!
+    public LOC(long BIA, long BTA, int branch_ID,boolean taken,int line) {
         this.BIA = BIA;
         this.BTA = BTA;
         this.branch_ID = branch_ID;
         this.taken = taken;
+        this.line = line;
     }
 
     public long getBIA() {
@@ -50,6 +52,14 @@ public class LOC {
 
     public void setTaken(boolean taken) {
         this.taken = taken;
+    }
+
+    public int getLine() {
+        return line;
+    }
+
+    public void setLine(int line) {
+        this.line = line;
     }
     
     

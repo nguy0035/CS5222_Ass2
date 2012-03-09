@@ -30,9 +30,9 @@ public class Predictor_2BIT {
     public boolean predictAtLine(int line){
         LOC loc = program.get(line);
         
-        boolean taken = branchHistory.get(loc.getBranch_ID()).DoPredict();
+        boolean predicted_outcome = branchHistory.get(loc.getBranch_ID()).DoPredict();
         
-        return branchHistory.get(loc.getBranch_ID()).DoPredict();
+        return predicted_outcome;
     }
     
     public void updatePredictorAtLine(int line,boolean actualPrediction){

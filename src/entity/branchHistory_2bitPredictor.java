@@ -38,6 +38,7 @@ public class branchHistory_2bitPredictor {
     
     //actualPrediction = false => not taken ; actualOutcome = true => taken
     public void UpdateState(boolean actualOutcome){
+        
         if (current_state == STATE_NN){
             if (actualOutcome)
                 current_state = STATE_NT;

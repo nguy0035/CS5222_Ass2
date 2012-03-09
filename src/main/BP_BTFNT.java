@@ -61,16 +61,21 @@ public class BP_BTFNT {
     private static void doPrediction(){
         
         Predictor_BTFNT BTFNT_predictor = new Predictor_BTFNT(program, num_of_branches);
+        LOC loc = null;
         boolean taken = false;
+        boolean actual_outcome; 
         for (int j=0;j<program.size();j++)
-        {           
+        {
+            loc = program.get(j);
+            actual_outcome = loc.isTaken();
             taken = BTFNT_predictor.predictAtLine(j);
-            if (taken == program.get(j).isTaken())
+            if (taken == actual_outcome)
                 numOfCorrectPrediction++;
         }
         
     }
     private static boolean readFile(String fileName){
+        int line = 0;
         File f = new File(fileName);
         Scanner sc = null ;
         String loc = null;
@@ -92,6 +97,7 @@ public class BP_BTFNT {
         }
         
         while (sc.hasNextLine()){
+            line++;
             loc = sc.nextLine();
             
             str = new StringTokenizer(loc);
@@ -104,14 +110,14 @@ public class BP_BTFNT {
             {
                 num_of_branches++;
                 branch_set.add(BTA);
-                branch_map.put(BTA,num_of_branches);
-                branch = num_of_branches;
+                branch = num_of_branches - 1;
+                branch_map.put(BTA,branch);
             }
             else{
                 branch = branch_map.get(BTA);
             }
             
-            program.add(new LOC(BIA,BTA,branch,taken));
+            program.add(new LOC(BIA,BTA,branch,taken,line));
         }
         
         return true;

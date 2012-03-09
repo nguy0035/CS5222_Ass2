@@ -26,6 +26,9 @@ public class BP_2BIT {
     
     static int numOfCorrectPrediction = 0;
     
+    
+    static int debug_branch_ID = 24;//DEBUG for branch
+    
     public static void main(String[] args){
         boolean success;
         String filename = "history.txt";
@@ -49,7 +52,7 @@ public class BP_2BIT {
         System.out.println(program.size());
         
         DecimalFormat df = new DecimalFormat("#.###");
-
+        
         System.out.println(df.format(accuracy));
     }
     
@@ -57,29 +60,40 @@ public class BP_2BIT {
         
         Predictor_2BIT twoBIT_predictor = new Predictor_2BIT(program, num_of_branches);
         
-        boolean taken = false;
+        boolean predicted_outcome = false;
         boolean actual_outcome;
         LOC loc = null;
+        
         for (int j=0;j<program.size();j++)
         {           
             loc = program.get(j);
-            taken = twoBIT_predictor.predictAtLine(j);
-            actual_outcome = loc.isTaken();
-            twoBIT_predictor.updatePredictorAtLine(j, actual_outcome);
+            if (loc.getBIA()== 1073812924L)
+                   System.out.println(loc.getBranch_ID() + " at line "+loc.getLine()+" at j = "+j);
+            if (loc.getBranch_ID() == debug_branch_ID){
+                predicted_outcome = twoBIT_predictor.predictAtLine(j);
+                actual_outcome = loc.isTaken();
+                twoBIT_predictor.updatePredictorAtLine(j, actual_outcome);
+            }
+            else{
+                predicted_outcome = twoBIT_predictor.predictAtLine(j);
+                actual_outcome = loc.isTaken();
+                twoBIT_predictor.updatePredictorAtLine(j, actual_outcome);
+            }
             
-            if (taken == loc.isTaken())
+            if (predicted_outcome == actual_outcome)
                 numOfCorrectPrediction++;
         }
     }
     
     private static boolean readFile(String fileName){
+        int line = 0;
         File f = new File(fileName);
         Scanner sc = null ;
         String loc = null;
         StringTokenizer str = null;
         
         long BIA = 0,BTA = 0;
-        int branch = 0;
+        int branch_ID = 0;
         int taken_str;
         boolean taken;
         
@@ -94,26 +108,30 @@ public class BP_2BIT {
         }
         
         while (sc.hasNextLine()){
+            line++;
             loc = sc.nextLine();
             
             str = new StringTokenizer(loc);
+            
             BIA = Long.parseLong(str.nextToken().substring(2),16);
             BTA = Long.parseLong(str.nextToken().substring(2),16);
             taken_str = Integer.parseInt(str.nextToken());
             taken = taken_str == 0 ? false : true;
             
-            if (!branch_set.contains(BTA))
+            if (BIA == 1073812924L)
+                System.out.println();
+            if (!branch_set.contains(BIA))
             {
                 num_of_branches++;
-                branch_set.add(BTA);
-                branch_map.put(BTA,num_of_branches);
-                branch = num_of_branches;
+                branch_set.add(BIA);
+                branch_ID = num_of_branches - 1;
+                branch_map.put(BIA,branch_ID);               
             }
             else{
-                branch = branch_map.get(BTA);
+                branch_ID = branch_map.get(BIA);
             }
             
-            program.add(new LOC(BIA,BTA,branch,taken));
+            program.add(new LOC(BIA,BTA,branch_ID,taken,line));
         }
         
         return true;
