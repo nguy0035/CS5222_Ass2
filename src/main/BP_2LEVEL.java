@@ -12,22 +12,20 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import predictor.Predictor_2BIT;
-import predictor.Predictor_BTFNT;
+import predictor.Predictor_2LEVEL;
 
 /**
  *
  * @author tatthang
  */
-public class BP_2BIT {
+public class BP_2LEVEL {
+    
     static Set branch_set = new HashSet<Long>();
     static HashMap<Long,Integer> branch_map = new HashMap<Long,Integer>();
     static int num_of_branches = 0;
     static ArrayList<LOC> program = new ArrayList<LOC>();
     
     static int numOfCorrectPrediction = 0;
-    
-    
-    static int debug_branch_ID = 24;//DEBUG for branch
     
     public static void main(String[] args){
         boolean success;
@@ -42,7 +40,28 @@ public class BP_2BIT {
         doPrediction();
         
         printAccuracy();
+    }
+    
+    private static void doPrediction(){
         
+        Predictor_2LEVEL twoLEVEL_predictor = new Predictor_2LEVEL(program, num_of_branches);
+        
+        boolean predicted_outcome = false;
+        boolean actual_outcome;
+        LOC loc = null;
+        
+        for (int j=0;j<program.size();j++)
+        {           
+            loc = program.get(j);
+            
+            
+            predicted_outcome = twoLEVEL_predictor.predictAtLine(j);
+            actual_outcome = loc.isTaken();
+            twoLEVEL_predictor.updatePredictorAtLine(j, actual_outcome);    
+            
+            if (predicted_outcome == actual_outcome)
+                numOfCorrectPrediction++;
+        }
     }
     
     private static void printAccuracy(){
@@ -54,34 +73,6 @@ public class BP_2BIT {
         DecimalFormat df = new DecimalFormat("#.###");
         
         System.out.println(df.format(accuracy));
-    }
-    
-    private static void doPrediction(){
-        
-        Predictor_2BIT twoBIT_predictor = new Predictor_2BIT(program, num_of_branches);
-        
-        boolean predicted_outcome = false;
-        boolean actual_outcome;
-        LOC loc = null;
-        
-        for (int j=0;j<program.size();j++)
-        {           
-            loc = program.get(j);
-            
-            if (loc.getBranch_ID() == debug_branch_ID){
-                predicted_outcome = twoBIT_predictor.predictAtLine(j);
-                actual_outcome = loc.isTaken();
-                twoBIT_predictor.updatePredictorAtLine(j, actual_outcome);
-            }
-            else{
-                predicted_outcome = twoBIT_predictor.predictAtLine(j);
-                actual_outcome = loc.isTaken();
-                twoBIT_predictor.updatePredictorAtLine(j, actual_outcome);
-            }
-            
-            if (predicted_outcome == actual_outcome)
-                numOfCorrectPrediction++;
-        }
     }
     
     private static boolean readFile(String fileName){
@@ -131,7 +122,6 @@ public class BP_2BIT {
             
             program.add(new LOC(BIA,BTA,branch_ID,taken,line));
         }
-        
         
         return true;
     }

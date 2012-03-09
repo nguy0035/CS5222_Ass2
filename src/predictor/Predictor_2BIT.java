@@ -13,6 +13,7 @@ import java.util.ArrayList;
  * @author tatthang
  */
 public class Predictor_2BIT {
+    
     private ArrayList<LOC> program = new ArrayList<LOC>();
     private int num_of_branches ;
     

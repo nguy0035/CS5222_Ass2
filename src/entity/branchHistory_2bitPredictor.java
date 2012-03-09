@@ -60,4 +60,10 @@ public class branchHistory_2bitPredictor {
                 current_state = STATE_TN;
         }
     }
+
+    public int getCurrent_state() {
+        return current_state;
+    }
+    
+    
 }
