@@ -46,16 +46,34 @@ public class Predictor_2LEVEL {
         return predicted_outcome;
     }
     
-    public void updatePredictorAtLine(int line,boolean actualPrediction){
+    public void updatePredictorAtLine(int line,boolean actual_outcome){
         LOC loc = program.get(line);
         int branch_ID = loc.getBranch_ID();
-        branchHistory[shared_BHSR].get(branch_ID).UpdateState(actualPrediction);
-        update_BHSR(line);
+        branchHistory[shared_BHSR].get(branch_ID).UpdateState(actual_outcome);
+        update_BHSR(actual_outcome);
     }
     
-    private void update_BHSR(int line){
-        LOC loc = program.get(line);
-        int branch_ID = loc.getBranch_ID();
-        shared_BHSR = branchHistory[shared_BHSR].get(branch_ID).getCurrent_state();
+    private void update_BHSR(boolean actual_outcome){
+        if (actual_outcome == false){
+            if (shared_BHSR == 0 )
+                shared_BHSR = 0 ;
+            else if (shared_BHSR == 1 )
+                shared_BHSR = 2;
+            else if (shared_BHSR == 2 )
+                shared_BHSR = 0;
+            else if (shared_BHSR == 3 )
+                shared_BHSR = 2;
+        }
+        else {
+            if (shared_BHSR == 0 )
+                shared_BHSR = 1 ;
+            else if (shared_BHSR == 1 )
+                shared_BHSR = 3;
+            else if (shared_BHSR == 2 )
+                shared_BHSR = 1;
+            else if (shared_BHSR == 3 )
+                shared_BHSR = 3;
+        }
+             
     }
 }
