@@ -34,7 +34,12 @@ public class BP_BTFNT {
     
     public static void main(String[] args){
         boolean success;
-        String filename = "history.txt";
+        if (args.length != 1)
+        {
+            System.out.println("Please check the arguments parameter. Program is terminated");
+            return;
+        }
+        String filename = args[0];
         success = readFile(filename);
         
         if (!success){
