@@ -46,13 +46,9 @@ public class BP_2BIT {
     }
     
     private static void printAccuracy(){
-        
+      
         double accuracy = (double)numOfCorrectPrediction / (double)(program.size()) * 100;
-        System.out.println(numOfCorrectPrediction);
-        System.out.println(program.size());
-        
-        DecimalFormat df = new DecimalFormat("#.###");
-        
+        DecimalFormat df = new DecimalFormat("#.###");        
         System.out.println(df.format(accuracy));
     }
     
@@ -67,18 +63,11 @@ public class BP_2BIT {
         for (int j=0;j<program.size();j++)
         {           
             loc = program.get(j);
-            
-            if (loc.getBranch_ID() == debug_branch_ID){
-                predicted_outcome = twoBIT_predictor.predictAtLine(j);
-                actual_outcome = loc.isTaken();
-                twoBIT_predictor.updatePredictorAtLine(j, actual_outcome);
-            }
-            else{
-                predicted_outcome = twoBIT_predictor.predictAtLine(j);
-                actual_outcome = loc.isTaken();
-                twoBIT_predictor.updatePredictorAtLine(j, actual_outcome);
-            }
-            
+                        
+            predicted_outcome = twoBIT_predictor.predictAtLine(j);
+            actual_outcome = loc.isTaken();
+            twoBIT_predictor.updatePredictorAtLine(j, actual_outcome);
+           
             if (predicted_outcome == actual_outcome)
                 numOfCorrectPrediction++;
         }

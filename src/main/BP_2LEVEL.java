@@ -67,11 +67,7 @@ public class BP_2LEVEL {
     private static void printAccuracy(){
         
         double accuracy = (double)numOfCorrectPrediction / (double)(program.size()) * 100;
-        System.out.println(numOfCorrectPrediction);
-        System.out.println(program.size());
-        
-        DecimalFormat df = new DecimalFormat("#.###");
-        
+        DecimalFormat df = new DecimalFormat("#.###");        
         System.out.println(df.format(accuracy));
     }
     

@@ -54,6 +54,8 @@ public class Predictor_2LEVEL {
     }
     
     private void update_BHSR(boolean actual_outcome){
+        
+        
         if (actual_outcome == false){
             if (shared_BHSR == 0 )
                 shared_BHSR = 0 ;
